@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import ServicesSerializador,PaymentUserSerializador, ExpiredPaymentsSerializador
 from .models import Services, Payment_user, Expired_payments
 from rest_framework.pagination import PageNumberPagination
-
+from rest_framework import filters
 
 @api_view(['GET'])
 def services(request):
@@ -31,6 +31,8 @@ def services(request):
 @api_view(['GET','POST', 'PUT'])
 def payment_user(request):
     print(request)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['paymentDate']
     if request.method == 'GET':
         paymentuser = Payment_user.objects.all()
         serializer = PaymentUserSerializador(paymentuser, many=True)
